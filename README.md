@@ -10,16 +10,15 @@
 
 
 ### Tasks
- Integrate html + css specific for elements
+ Upload to Github Pages
  Refactor Code Fix bugs in dev tools and what is listed below
  add icon change title etc for presentation
  Introduce some more react specific technology more hooks useCallback etc imporove
  Improve performance rendering etc
- Upload to Github Pages
+ 
 
 
 ### Bugs
  TODO BUG open serve web connect should not be two open serve providers showing twice for web connect as well
- TODO not parsing values through 1Gbps Uncapped Fibre on summarising product
- TODO Product Name needs to be filtered correct still getting the provider name coming through
- TODO Improve the column spacing for all screen sizes
+ TODO Product Name needs to be filtered correct still getting the provider name coming throug
+ TODO Speed filter does it take into account 1Gbsp or 1GB

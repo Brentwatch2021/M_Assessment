@@ -44,7 +44,7 @@ const Card = (props) => {
 
   return (
     <div class="checkbox-container">
-        <input onChange={handleCheckBoxSelected} type="checkbox" id={props.name} />
+        <input className='checkbox_styled' onChange={handleCheckBoxSelected} type="checkbox" id={props.name} />
         <label style={{ backgroundImage: `url(${props.url})`}} htmlFor={props.name}></label>
     </div>
   );

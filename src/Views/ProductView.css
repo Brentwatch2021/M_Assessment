@@ -1,0 +1,28 @@
+.productName
+{
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-weight:bold;
+    font-size: 28px;
+    color: #333;
+}
+
+.throttling
+{
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    opacity: 0.5;
+}
+
+.rateStyle
+{
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-weight:bold;
+    font-size: 24px;
+    color: #333;
+    padding: 10px;
+}
+
+.coverageButton
+{
+    background-image: linear-gradient(to right, #FF7F50, #FFA500);
+    color: white;
+}

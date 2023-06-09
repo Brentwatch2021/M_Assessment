@@ -1,5 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import PromoFilterContext from '../React_Context_API/PromoFilterContext';
+import './ProductView.css'
 
 const ProductsView = (props) => {
     // // Global State Filters
@@ -108,27 +109,36 @@ const ProductsView = (props) => {
         {/* {filteredProducts.map((product) => (<p>Name: {product.productName} and the rate is: {product.productRate} AND the download speed is: {product.downloadSpeed} AND the measurment is {product.measurementPS} AND the upload speed is {product.uploadSpeedTotal}</p>))} */}
         {filteredProducts.map((product) => 
         (
+          // {productCode, productName, productRate, provider,downloadSpeed,measurementPS,uploadSpeedTotal,providerUrl,unthrottled, freeRouter};
           <div className='w-50 d-flex flex-column p-3'>
             <div className='border p-2'>
               <div className='d-flex flex-wrap justify-content-between'>
                 <div className='d-flex flex-column'>
-                  <span>product name </span>
-                  <span>throttling </span>
-                  <span>free router </span>
+                  <span className='productName'>{product.productName}</span>
+                  <span className='throttling'>Unthrottled </span>
+                  <span className='throttling'>FREE Installation + Router</span>
                 </div>
-                <div className='d-flex flex-wrap justify-content-between p-2 border'>
-                     <div className='p-2'>
-                        upload
+                <div className='d-flex flex-wrap justify-content-between  p-2 border'>
+                     <div className='d-flex flex-column p-2'>
+                          <div class="d-flex justify-content-center align-items-center">
+                              <span class="text-center"><i class="bi bi-arrow-down"></i></span>
+                          </div>
+                        <span>Download</span> 
+                        <span>{product.downloadSpeed}{product.measurementPS}</span> 
                      </div>
-                     <div className='p-2'>
-                      download
+                     <div className='d-flex flex-column p-2'>
+                          <div class="d-flex justify-content-center align-items-center">
+                              <span class="text-center"><i class="bi bi-arrow-up"></i></span>
+                          </div>
+                        <span>Upload</span> 
+                        <span>{product.uploadSpeedTotal}{product.measurementPS}</span> 
                      </div>
                 </div>
               </div>
               <div className='d-flex flex-wrap justify-content-around p-4'>
-                <div> Rate </div>
-                <div> ProviderImage </div>
-                <div> Coverage Button </div>
+                <div><span className='rateStyle'>R{product.productRate}pm</span></div>
+                <div> <img src={product.providerUrl} alt={product.provider}></img> </div>
+                <div> <button className='coverageButton p-2'>Check Coverage</button> </div>
               </div>
             </div>
           {/* <div>

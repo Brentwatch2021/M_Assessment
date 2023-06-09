@@ -4,19 +4,23 @@
     margin-right: 10px;
   }
   
+  
   .checkbox-container input[type="checkbox"] {
     display: none;
   }
   
   .checkbox-container label {
     display: inline-block;
-    width: 20px;
-    height: 20px;
+    width: 150px;
+    height: 80px;
+    border-radius: 10px;
     background-size: cover;
     border: 2px solid #ccc;
     cursor: pointer;
+    opacity: 0.30;
   }
   
   .checkbox-container input[type="checkbox"]:checked + label {
-    border-color: #f00; /* Custom selected border color */
+    border-color: blue; /* Custom selected border color */
+    opacity: 1;
   }
