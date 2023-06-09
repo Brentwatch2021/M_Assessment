@@ -43,24 +43,55 @@ const ProductsView = (props) => {
         // provider:
         // 'Web Connect'
         // Filter on price selection
-        switch(providerFilterSelection.PriceRangeSelected)
+        
+
+        // <option value="0To20">0Mbps to 20Mbps</option>
+        // <option value="20To50" >20 to 50 Mbps</option>
+        // <option value="50+">50 Mbps+</option>
+
+        // also account for GB and Gbps it should show if any poses any of these values
+        // Filter on speed selection
+        if(selectedProducts.length > 0)
         {
-          case '0 - 699':
-          //selectedProducts = selectedProducts.filter(product => product.productRate >= 0 && product.productRate <= 699);  
-          break;
-          case '700 - 999':
-          //selectedProducts = selectedProducts.filter(product => product.productRate >= 700 && product.productRate <= 999);  
-          break;
-          case '1000+':
-          //selectedProducts = selectedProducts.filter(product => product.productRate >= 1000);  
-          break;
-          default:
+
+          switch(providerFilterSelection.PriceRangeSelected)
+          {
+            case '0 - 699':
+            selectedProducts = selectedProducts.filter(product => product.productRate >= 0 && product.productRate <= 699);  
+            break;
+            case '700 - 999':
+            selectedProducts = selectedProducts.filter(product => product.productRate >= 700 && product.productRate <= 999);  
+            break;
+            case '1000+':
+            selectedProducts = selectedProducts.filter(product => product.productRate >= 1000);  
+            break;
+            default:
+            break
+          }
+
+          
+          switch(providerFilterSelection.SpeedRangeSelected)
+          {
+            // These filter only on Mbps not for GB or Gbps
+            case '0To20':
+            selectedProducts = selectedProducts.filter(product => product.downloadSpeed >= 0 && product.downloadSpeed <= 20);  
+            break;
+            case '20To50':
+            selectedProducts = selectedProducts.filter(product => product.downloadSpeed >= 20 && product.downloadSpeed <= 50);  
+            break;
+            case '50+':
+            selectedProducts = selectedProducts.filter(product => product.downloadSpeed >= 50);  
+            break;
+            default:
+            break
+          }
         }
+        
 
         setFilteredProducts(selectedProducts);
 
 
-      },[providerFilterSelection.providersSelected,providerFilterSelection.PriceRangeSelected])
+      },[providerFilterSelection.providersSelected,providerFilterSelection.PriceRangeSelected,providerFilterSelection.SpeedRangeSelected])
 
   return (
     <div>

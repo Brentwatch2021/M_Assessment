@@ -15,8 +15,8 @@ function App() {
   //const [providerSelection, setProviderSelection] = useState([]);
   const [providerFilterSelection,setProviderFilterSelection] = useState({
     providersSelected:[],
-    SpeedRangeSelected:'',
-    PriceRangeSelected:'0 - 699'
+    SpeedRangeSelected:'Speed',
+    PriceRangeSelected:'Price'
   });
 
   
@@ -531,12 +531,14 @@ function App() {
 
       {/* Speed */}
       <select value={providerFilterSelection.SpeedRangeSelected} onChange={handleSpeedChange}>
-        <option value="below10">below 9 mbps</option>
-        <option value="8mbps" >10 to 20 mbps</option>
-        <option value="16mbps">20 mbps+</option>
+        <option value="Speed" selected>Speed</option>
+        <option value="0To20">0Mbps to 20Mbps</option>
+        <option value="20To50" >20 to 50 Mbps</option>
+        <option value="50+">50 Mbps+</option>
       </select>
       {/* Price */}
       <select value={providerFilterSelection.PriceRangeSelected} onChange={handlePriceChange}>
+      <option value="Price">Price</option>
         <option value="0 - 699">R0 - R699</option>
         <option value="700 - 999" >R700 - R999</option>
         <option value="1000+">R1000+</option>
