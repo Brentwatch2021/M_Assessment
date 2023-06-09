@@ -94,30 +94,68 @@ const ProductsView = (props) => {
       },[providerFilterSelection.providersSelected,providerFilterSelection.PriceRangeSelected,providerFilterSelection.SpeedRangeSelected])
 
   return (
-    <div>
-        <p>Products View</p>
+    <div className='container'>
+      <div className='row'>
+        {/* TODO Improve the column spacing for all screen sizes */}
+        <div className='col-11 col-sm-12 col-md-12'> 
+        
         {/* 
           
 
         */}
+        <div className='d-flex flex-wrap'>
+        
         {/* {filteredProducts.map((product) => (<p>Name: {product.productName} and the rate is: {product.productRate} AND the download speed is: {product.downloadSpeed} AND the measurment is {product.measurementPS} AND the upload speed is {product.uploadSpeedTotal}</p>))} */}
         {filteredProducts.map((product) => 
         (
-          <>
-          <hr/>
-          <br/>
-          <p>Name: {product.productName}</p>
+          <div className='w-50 d-flex flex-column p-3'>
+            <div className='border p-2'>
+              <div className='d-flex flex-wrap justify-content-between'>
+                <div className='d-flex flex-column'>
+                  <span>product name </span>
+                  <span>throttling </span>
+                  <span>free router </span>
+                </div>
+                <div className='d-flex flex-wrap justify-content-between p-2 border'>
+                     <div className='p-2'>
+                        upload
+                     </div>
+                     <div className='p-2'>
+                      download
+                     </div>
+                </div>
+              </div>
+              <div className='d-flex flex-wrap justify-content-around p-4'>
+                <div> Rate </div>
+                <div> ProviderImage </div>
+                <div> Coverage Button </div>
+              </div>
+            </div>
+          {/* <div>
+            <div>
+              <p>{product.productName}</p>
+              {product.unthrottled ? <p>Unthrottled</p> : <p>Throttled</p>} 
+              {product.freeRouter ? <p>Free Router and Instalation</p> : <p>Prepaid</p>}
+            </div>
+            <div>
+              <p>Download Speed: {product.downloadSpeed}</p>
+              <p>Upload Speed: {product.uploadSpeedTotal}</p>
+            <div/>
+          <div/>
+          <div/>
+          
           <p>ProductRate: R{product.productRate}</p>
-          <p>Download Speed: {product.downloadSpeed}</p>
-          <p>Upload Speed: {product.uploadSpeedTotal}</p>
+          
           <img src={product.providerUrl} alt={product.provider}></img> 
-          {product.unthrottled ? <p>Unthrottled</p> : <p>Throttled</p>}
-          {product.freeRouter ? <p>Free Router and Instalation</p> : <p>Prepaid</p>}
-          <hr/>
-          <br/>
-          </>
+          
+          
+          
+          </div> */}
+          </div>
         ))}
-        
+          </div>
+          </div>
+        </div>
     </div>
   );
 };

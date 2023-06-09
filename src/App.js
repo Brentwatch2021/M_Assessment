@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux'
 import setProviders from './Redux_Toolkit/providersSlice'
 import PromoFilterContext from './React_Context_API/PromoFilterContext';
 import ProductsView from './Views/ProductsView';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 function App() {
@@ -523,35 +523,110 @@ function App() {
     <PromoFilterContext.Provider value={{ providerFilterSelection, updateFilterSelection}}>
     <div className="App">
       <h1>Fibre Products</h1>
+      <h4>Select a Fibre infrastructure provider below browse the products available and complete a coverage search</h4>
       {providers.map((p) => (<><Card key={p.name} name={p.name} url={p.url}/></>))}
       {/* {providerSelection.map((providerSelectedName) => (<p>{providerSelectedName}</p>))} */}
 
       {/* Filter By Section */}
-      <p>Filter By</p>
+      {/* <p>Filter By</p>
 
-      {/* Speed */}
+      
       <select value={providerFilterSelection.SpeedRangeSelected} onChange={handleSpeedChange}>
         <option value="Speed" selected>Speed</option>
         <option value="0To20">0Mbps to 20Mbps</option>
         <option value="20To50" >20 to 50 Mbps</option>
         <option value="50+">50 Mbps+</option>
       </select>
-      {/* Price */}
+      
       <select value={providerFilterSelection.PriceRangeSelected} onChange={handlePriceChange}>
       <option value="Price">Price</option>
         <option value="0 - 699">R0 - R699</option>
         <option value="700 - 999" >R700 - R999</option>
         <option value="1000+">R1000+</option>
-      </select>
+      </select> */}
       
-      <p>Price Range Selected: {providerFilterSelection.PriceRangeSelected}  </p>
-      <p>Speed Range Selected: {providerFilterSelection.SpeedRangeSelected}  </p>
+      
       {/* {providerFilterSelection.providersSelected.map((providerSelectedName) => (<p>{providerSelectedName}</p>))} */}
       {/* Products */}
       {/* {products && products.length > 1 ? products[0].products.map((product) => (<><p>{product.productName}</p></>)) : undefined} */}
       {/* {promoProducts && promoProducts.length > 1 ? promoProducts[0].products.map((product) => (<><p>{product.productName}</p></>)) : undefined} */}
       {/* {filteredProducts && filteredProducts.length > 0 ? filteredProducts[0].products.map((product) => (<><p>{product.productName}</p></>)) : undefined} */}
       {/* {filteredProductsDynamic && filteredProductsDynamic.length > 0 ? filteredProductsDynamic[0].products.map((product) => (<><p>{product.productName}</p></>)) : undefined} */}
+      {/* <br></br>
+    <br></br>
+    <br></br>
+    <br></br>
+    <div className='container'>
+    <div className='row'>
+      <div className='col-8 border'>
+        <div className='d-flex flex-wrap justify-content-between'>
+          <div className='d-flex flex-column'>
+            <span>Filter By: </span>
+            <div className='d-flex flex-wrap'>
+              price filter
+              speed filter
+            </div>
+          </div>
+          <div className='border col-6'>
+            <div className='d-flex flex-column'>
+              <span>Deal Type: </span>
+              <span className='bg-primary text-white'>Free Router + Instalation </span>
+            </div>
+            </div>
+        </div>
+      </div> */}
+    </div>
+    <br></br>
+    <br></br>
+    <br></br>
+    <br></br>
+    <div className='container'>
+    <div className='row'>
+      <div className='col-10 col-sm-10 col-md-12 col-lg-12 col-xl-8'>
+        <div className='d-flex flex-wrap justify-content-between'>
+          <div className='d-flex flex-column'>
+            <span>Filter By: </span>
+            <div className='d-flex flex-wrap gap-3'>
+                <select className='p-2' value={providerFilterSelection.PriceRangeSelected} onChange={handlePriceChange}>
+                  <option value="Price">Price</option>
+                  <option value="0 - 699">R0 - R699</option>
+                  <option value="700 - 999" >R700 - R999</option>
+                  <option value="1000+">R1000+</option>
+                </select>
+                <select className='p-2' value={providerFilterSelection.SpeedRangeSelected} onChange={handleSpeedChange}>
+                  <option value="Speed" selected>Speed</option>
+                  <option value="0To20">0Mbps to 20Mbps</option>
+                  <option value="20To50" >20 to 50 Mbps</option>
+                  <option value="50+">50 Mbps+</option>
+                </select>
+            </div>
+          </div>
+          <div className='col-6'>
+            <div className='d-flex flex-column'>
+              <span>Deal Type: </span>
+              <span className='bg-primary text-white p-3 text-center'>FREE Set Up + Router</span>
+            </div>
+            </div>
+        </div>
+      </div>
+      {/* <div className='col-5'>
+        <div className='d-flex flex-wrap justify-content-around'> 
+        <p>Filter By: </p> 
+          <select value={providerFilterSelection.PriceRangeSelected} onChange={handlePriceChange}>
+            <option value="Price">Price</option>
+            <option value="0 - 699">R0 - R699</option>
+            <option value="700 - 999" >R700 - R999</option>
+            <option value="1000+">R1000+</option>
+          </select>
+          <select value={providerFilterSelection.SpeedRangeSelected} onChange={handleSpeedChange}>
+            <option value="Speed" selected>Speed</option>
+            <option value="0To20">0Mbps to 20Mbps</option>
+            <option value="20To50" >20 to 50 Mbps</option>
+            <option value="50+">50 Mbps+</option>
+          </select>
+        </div>
+      </div> */}
+    </div>
       
     </div>
     <ProductsView summarizedProducts={summarizedProducts}/>
