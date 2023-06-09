@@ -82,6 +82,7 @@ function App() {
       const getSummarizedProduct = ({productCode, productName, productRate, subcategory}) => 
       {
         const provider = subcategory.replace('Uncapped', '').replace('Capped', '').trim();
+        productName = productName.replace(provider, '').replace('-', '').trim();
         // // Download speed extraction permutations
 
         
@@ -109,16 +110,19 @@ function App() {
         const {downloadSpeed, measurement,uploadSpeed} = getDownloadSpeed(productName);
         const measurementPS = measurement;
         const uploadSpeedTotal = uploadSpeed;
-        const uncapped = 'true or false';
-        const providerUrl = '';
-        const freeRouter = 'true or false';
+        const unthrottled = productName.includes('Uncapped') ? true : false;
+        const imageOfProviderBaseUrl = "https://www.mweb.co.za/media/images/providers";
+        const providerUrl = `${imageOfProviderBaseUrl}/provider-${GetProviderImageName(provider.toLowerCase())}.png`;
+        // Seems all mweb promos come with free router and instalation
+        const freeRouter = true;
+        
         //Properties Required to be extracted:
           
           
           //Uncapped Fibre yes/no
           //image url
 
-        return {productCode, productName, productRate, provider,downloadSpeed,measurementPS,uploadSpeedTotal};
+        return {productCode, productName, productRate, provider,downloadSpeed,measurementPS,uploadSpeedTotal,providerUrl,unthrottled, freeRouter};
       }
 
       const getDownloadSpeed = (productName) => {
@@ -132,10 +136,13 @@ function App() {
           {
             const downloadSpeedIndex = trimmedSpeed.indexOf("/");
             const speed = trimmedSpeed.substring(0, downloadSpeedIndex);
-            const uploadSpeed = trimmedSpeed.substring(downloadSpeedIndex, trimmedSpeed.length);
+            const uploadSpeedinitial = trimmedSpeed.substring(downloadSpeedIndex, trimmedSpeed.length);
+            const measurementIndex  = uploadSpeedinitial.indexOf("Mbps");
+            const uploadSpeedtrimmed = uploadSpeedinitial.substring(1, measurementIndex).trim();
             const downloadSpeed = parseInt(speed);
+            const uploadSpeed = parseInt(uploadSpeedtrimmed);
             const measurement = 'Mbps';
-            if(!isNaN(downloadSpeed))
+            if(!isNaN(downloadSpeed) && !isNaN(uploadSpeed))
             {
               return {downloadSpeed,measurement,uploadSpeed};
             }
@@ -151,10 +158,15 @@ function App() {
           {
             const downloadSpeedIndex2 = trimmedSpeed2.indexOf("/");
             const speed2 = trimmedSpeed2.substring(0, downloadSpeedIndex2);
-            const speedNumber2 = parseInt(speed2);
-            if(!isNaN(speedNumber2))
+            const measurementIndex  = trimmedSpeed2.indexOf("Mbps");
+            const uploadSpeedtrimmed = trimmedSpeed2.substring(downloadSpeedIndex2 + 1, measurementIndex).trim();
+            const downloadSpeed = parseInt(speed2);
+            const uploadSpeed = parseInt(uploadSpeedtrimmed);
+            const measurement = "Mbps";
+            if(!isNaN(downloadSpeed) && !isNaN(uploadSpeed))
             {
-              return speedNumber2;
+               return {downloadSpeed,measurement,uploadSpeed};
+              //return downloadSpeed;
             }
           }
 
@@ -168,10 +180,13 @@ function App() {
           {
             const downloadSpeedIndex3 = trimmedSpeed3.indexOf("Mbps");
             const speed3 = trimmedSpeed3.substring(0, downloadSpeedIndex3);
-            const speedNumber3 = parseInt(speed3);
-            if(!isNaN(speedNumber3))
+            const downloadSpeed = parseInt(speed3);
+            const uploadSpeed = downloadSpeed;
+            const measurement = "Mbps";
+            if(!isNaN(downloadSpeed) && !isNaN(uploadSpeed))
             {
-              return speedNumber3;
+              return {downloadSpeed,measurement,uploadSpeed};
+              //return speedNumber3;
             }
           }
 
@@ -184,10 +199,13 @@ function App() {
           {
             //const downloadSpeedIndex4 = trimmedSpeed4.indexOf("Mbps");
             //const speed4 = trimmedSpeed4.substring(0, downloadSpeedIndex4);
-            const speedNumber4 = parseInt(trimmedSpeed4);
-            if(!isNaN(speedNumber4))
+            const downloadSpeed = parseInt(trimmedSpeed4);
+            const uploadSpeed = downloadSpeed;
+            const measurement = "Mbps";
+            if(!isNaN(downloadSpeed))
             {
-              return speedNumber4;
+              return {downloadSpeed,measurement,uploadSpeed};
+              //return speedNumber4;
             }
           }
 
@@ -200,10 +218,13 @@ function App() {
           {
             //const downloadSpeedIndex4 = trimmedSpeed4.indexOf("Mbps");
             //const speed4 = trimmedSpeed4.substring(0, downloadSpeedIndex4);
-            const speedNumber5 = parseInt(trimmedSpeed5);
-            if(!isNaN(speedNumber5))
+            const uploadSpeed = parseInt(trimmedSpeed5);
+            const downloadSpeed = uploadSpeed;
+            const measurement = "Gbps";
+            if(!isNaN(uploadSpeed))
             {
-              return speedNumber5;
+              return {downloadSpeed,measurement,uploadSpeed};
+              //return speedNumber5;
             }
           }
 
@@ -213,16 +234,18 @@ function App() {
           const nextIndex6 = productName.indexOf("Fibre");
           const totalspeed6 = productName.substring(18, nextIndex6).trim();
           const startupIndex6 = totalspeed6.indexOf("/");
-          const speed6 = totalspeed6.substring(0, startupIndex6);
-          const trimmedSpeed6 = speed6.trim();
-          if(trimmedSpeed6.length > 0)
+          const uploadindexStart = startupIndex6 + 1;
+          const enduploadIndex = totalspeed6.indexOf("Mbps");
+          const uploadSpeed = totalspeed6.substring(uploadindexStart, enduploadIndex).trim();
+          const downloadSpeed = totalspeed6.substring(0, startupIndex6).trim();
+          const measurement = "Mbps";
+          if(downloadSpeed.length > 0)
           {
             //const downloadSpeedIndex4 = trimmedSpeed4.indexOf("Mbps");
             //const speed4 = trimmedSpeed4.substring(0, downloadSpeedIndex4);
-            const speedNumber6 = parseInt(trimmedSpeed6);
-            if(!isNaN(speedNumber6))
+            if(!isNaN(downloadSpeed) && !isNaN(uploadSpeed))
             {
-              return speedNumber6;
+              return {downloadSpeed,measurement,uploadSpeed};
             }
           }
 
@@ -237,10 +260,12 @@ function App() {
           {
             //const downloadSpeedIndex4 = trimmedSpeed4.indexOf("Mbps");
             //const speed4 = trimmedSpeed4.substring(0, downloadSpeedIndex4);
-            const speedNumber7 = parseInt(trimmedSpeed7);
-            if(!isNaN(speedNumber7))
+            const downloadSpeed = parseInt(trimmedSpeed7);
+            const uploadSpeed = downloadSpeed;
+            const measurement = "Gbps";
+            if(!isNaN(downloadSpeed))
             {
-              return speedNumber7;
+              return {downloadSpeed,measurement,uploadSpeed};
             }
           }
 
@@ -252,10 +277,12 @@ function App() {
           {
             //const downloadSpeedIndex4 = trimmedSpeed4.indexOf("Mbps");
             //const speed4 = trimmedSpeed4.substring(0, downloadSpeedIndex4);
-            const speedNumber8 = parseInt(totalspeed8);
-            if(!isNaN(speedNumber8))
+            const downloadSpeed = parseInt(totalspeed8);
+            const measurement = "GB";
+            const uploadSpeed = downloadSpeed;
+            if(!isNaN(downloadSpeed))
             {
-              return speedNumber8;
+              return {downloadSpeed,measurement,uploadSpeed};
             }
           }
 
@@ -265,16 +292,21 @@ function App() {
           const nextIndex9 = productName.indexOf("Fibre");
           const totalspeed9 = productName.substring(20, nextIndex9).trim();
           const startupIndex9 = totalspeed9.indexOf("/");
-          const speed9 = totalspeed9.substring(0, startupIndex9);
-          const trimmedSpeed9 = speed9.trim();
-          if(trimmedSpeed9.length > 0)
+          const uploadSpeedIndexStart = startupIndex9 + 1;
+          const uploadSpeedIndexEnd = totalspeed9.indexOf("Mbps");
+          const uploadSpeedTrimmed = totalspeed9.substring(uploadSpeedIndexStart, uploadSpeedIndexEnd).trim();
+          const downloadSpeedTrimmed = totalspeed9.substring(0, startupIndex9).trim();
+          if(downloadSpeedTrimmed.length > 0)
           {
             //const downloadSpeedIndex4 = trimmedSpeed4.indexOf("Mbps");
             //const speed4 = trimmedSpeed4.substring(0, downloadSpeedIndex4);
-            const speedNumber9 = parseInt(trimmedSpeed9);
-            if(!isNaN(speedNumber9))
+            const downloadSpeed = parseInt(downloadSpeedTrimmed);
+            const uploadSpeed = parseInt(uploadSpeedTrimmed);
+            const measurement = "Mbps";
+            if(!isNaN(downloadSpeed) && !isNaN(uploadSpeed))
             {
-              return speedNumber9;
+              return {downloadSpeed,measurement,uploadSpeed};
+              //return speedNumber9;
             }
           }
 

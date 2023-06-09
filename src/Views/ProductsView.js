@@ -69,7 +69,24 @@ const ProductsView = (props) => {
           
 
         */}
-        {filteredProducts.map((product) => (<p>{product.productName} and the rate is: {product.productRate} AND the download speed is: {product.downloadSpeed} AND the measurment is {product.measurementPS} AND the upload speed is {product.uploadSpeedTotal}</p>))}
+        {/* {filteredProducts.map((product) => (<p>Name: {product.productName} and the rate is: {product.productRate} AND the download speed is: {product.downloadSpeed} AND the measurment is {product.measurementPS} AND the upload speed is {product.uploadSpeedTotal}</p>))} */}
+        {filteredProducts.map((product) => 
+        (
+          <>
+          <hr/>
+          <br/>
+          <p>Name: {product.productName}</p>
+          <p>ProductRate: R{product.productRate}</p>
+          <p>Download Speed: {product.downloadSpeed}</p>
+          <p>Upload Speed: {product.uploadSpeedTotal}</p>
+          <img src={product.providerUrl} alt={product.provider}></img> 
+          {product.unthrottled ? <p>Unthrottled</p> : <p>Throttled</p>}
+          {product.freeRouter ? <p>Free Router and Instalation</p> : <p>Prepaid</p>}
+          <hr/>
+          <br/>
+          </>
+        ))}
+        
     </div>
   );
 };
