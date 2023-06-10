@@ -115,8 +115,9 @@ const ProductsView = (props) => {
               <div className='d-flex flex-wrap justify-content-between'>
                 <div className='d-flex flex-column'>
                   <span className='productName'>{product.productName}</span>
-                  <span className='throttling'>Unthrottled </span>
-                  <span className='throttling'>FREE Installation + Router</span>
+                  { product.unthrottled ? <span className='throttling'>Unthrottled </span> :  <span className='throttling'>Unthrottled </span>} 
+                  { product.freeRouter ? <span className='throttling'>FREE Installation + Router</span> :  <span className='throttling'>Recurring Fibre</span>} 
+                  
                 </div>
                 <div className='d-flex flex-wrap justify-content-between  p-2 border'>
                      <div className='d-flex flex-column p-2'>

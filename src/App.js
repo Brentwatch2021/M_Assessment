@@ -14,6 +14,7 @@ function App() {
   const [providers,setProviderss] = useState([]);
   //const [providerSelection, setProviderSelection] = useState([]);
   const [providerFilterSelection,setProviderFilterSelection] = useState({
+    dealTypeSelected:'FTTH-FREESETUP-FREEROUTER',
     providersSelected:[],
     SpeedRangeSelected:'Speed',
     PriceRangeSelected:'Price'
@@ -45,8 +46,8 @@ function App() {
   useEffect(() => {
 
     GetProviders();
-
   },[])
+  // },[providerFilterSelection.dealTypeSelected])
 
 
   function GetProviders() {
@@ -66,6 +67,8 @@ function App() {
           return  'linkafrica';
           case 'vumatel':
           return 'vuma';
+          case 'vuma reach':
+          return 'vuma';
           case 'clear access':
           return 'clearaccess';
           case 'link layer':
@@ -79,7 +82,7 @@ function App() {
         }
       }
 
-      const getSummarizedProduct = ({productCode, productName, productRate, subcategory}) => 
+      const getSummarizedProduct = ({productCode, productName, productRate, subcategory,parameters},promoCodeTagline) => 
       {
         const provider = subcategory.replace('Uncapped', '').replace('Capped', '').trim();
         productName = productName.replace(provider, '').replace('-', '').trim();
@@ -107,14 +110,17 @@ function App() {
         // 1Gb/500Mbps Uncapped Fibre - Thinkspeed Alternate Precincts and the rate is: 1459
 
 
-        const {downloadSpeed, measurement,uploadSpeed} = getDownloadSpeed(productName);
-        const measurementPS = measurement;
-        const uploadSpeedTotal = uploadSpeed;
-        const unthrottled = productName.includes('Uncapped') ? true : false;
+        //const {downloadSpeed, measurement,uploadSpeed} = getDownloadSpeed(productName);
+        const downloadSpeed = getSpeedinMbps(parameters.find(p => p.name === 'downloadSpeed'));
+        const measurementPS = 'Mbps';
+        const uploadSpeedTotal = getSpeedinMbps(parameters.find(p => p.name === 'uploadSpeed'));
+        
+        const unthrottled = parameters.find(p => p.name === 'isThrottled')?.value ? true : false;
+        
         const imageOfProviderBaseUrl = "https://www.mweb.co.za/media/images/providers";
         const providerUrl = `${imageOfProviderBaseUrl}/provider-${GetProviderImageName(provider.toLowerCase())}.png`;
         // Seems all mweb promos come with free router and instalation
-        const freeRouter = true;
+        const freeRouter = promoCodeTagline === 'FREE Installation + Router' ? true : false;
         
         //Properties Required to be extracted:
           
@@ -123,6 +129,21 @@ function App() {
           //image url
 
         return {productCode, productName, productRate, provider,downloadSpeed,measurementPS,uploadSpeedTotal,providerUrl,unthrottled, freeRouter};
+      }
+
+      const getSpeedinMbps = (productSpeed) =>
+      {
+        if(productSpeed)
+        {
+          const kbpsIndex = productSpeed.value.indexOf('KBPS')
+          const speed = productSpeed.value.substring(0, kbpsIndex - 1).trim();
+          let downloadSpeed = parseInt(speed);
+          downloadSpeed = downloadSpeed / 1000;
+          if(downloadSpeed)
+          {
+            return Math.floor(downloadSpeed);
+          }
+        }
       }
 
       const getDownloadSpeed = (productName) => {
@@ -375,8 +396,9 @@ function App() {
         }
 
       const getProductsFromPromo = (pc) => {
-        const promoCode = pc.promoCode
-        return pc.products.reduce((prods, p) => [...prods, getSummarizedProduct(p)], [])
+        const promoCode = pc.promoCode;
+        const promoCodeTagLine	= pc.promoCodeTagLine;
+        return pc.products.reduce((prods, p) => [...prods, getSummarizedProduct(p,promoCodeTagLine)], [])
       } 
 
 
@@ -392,16 +414,26 @@ function App() {
 
         // Filter on selected campaign
         if (data && data.campaigns.length > 0) {
+          
+          
+          // free router
           const selectedCampaign = data.campaigns.filter(c => c.code === freeDealtypeRouter)[0];
+          
+          // no router tsek
+          //const selectedCampaign = data.campaigns.filter(c => c.code === prepaid)[0];
+
+          // Dynamic Campaign hopefully this works
+          //const selectedCampaign = data.campaigns.filter(c => c.code === providerFilterSelection.dealTypeSelected)[0];
+          
           console.log(selectedCampaign);
 
           const promoCodes = selectedCampaign.promocodes;
-
+          //VUMA-REACH-RECURRING
           // marketing url
           const marketingBaseUrl = 'https://apigw.mweb.co.za/prod/baas/proxy';
-
+          // https://apigw.mweb.co.za/prod/baas/proxy/marketing/products/promos/VUMA-REACH-RECURRING?sellable_online=true
           const promoCodesAPIURL = `${marketingBaseUrl}/marketing/products/promos/${promoCodes.join(',')}?sellable_online=true`;
-
+          console.log(promoCodesAPIURL)
           // promo Products
           const promocodeProductsResponse = await fetch(promoCodesAPIURL);
           const promocodeProducts = await promocodeProductsResponse.json();
@@ -482,6 +514,7 @@ function App() {
     const priceSelected = event.target.value;
 
     const providerFilterSelectionUpdated = {
+      dealTypeSelected:providerFilterSelection.dealTypeSelected,
       providersSelected:providerFilterSelection.providersSelected,
       SpeedRangeSelected:providerFilterSelection.SpeedRangeSelected,
       PriceRangeSelected:priceSelected
@@ -496,6 +529,7 @@ function App() {
     
     
     const providerFilterSelectionUpdated = {
+      dealTypeSelected:providerFilterSelection.dealTypeSelected,
       providersSelected:providerFilterSelection.providersSelected,
       SpeedRangeSelected:speedSelected,
       PriceRangeSelected:providerFilterSelection.PriceRangeSelected
@@ -503,6 +537,22 @@ function App() {
 
     setProviderFilterSelection(providerFilterSelectionUpdated);
   }
+
+  const handleDealTypeChanged = (event) => {
+    const dealTypeSelected = event.target.value;
+
+    const providerFilterSelectionUpdated = {
+      dealTypeSelected:dealTypeSelected,
+      providersSelected:providerFilterSelection.providersSelected,
+      SpeedRangeSelected:providerFilterSelection.SpeedRangeSelected,
+      PriceRangeSelected:providerFilterSelection.PriceRangeSelected
+    }
+
+    //setProviderFilterSelection(providerFilterSelectionUpdated);
+
+  }
+
+  
 
   //let productsToDisplay = undefined;
   // if(products.length > 1)
@@ -604,7 +654,11 @@ function App() {
           <div className='col-6'>
             <div className='d-flex flex-column'>
               <span>Deal Type: </span>
-              <span className='bg-primary text-white p-3 text-center'>FREE Set Up + Router</span>
+                {/* <span className='bg-primary text-white p-3 text-center'>FREE Set Up + Router</span> */}
+                <select className='p-2' value={providerFilterSelection.DealTypeSelected} onChange={handleDealTypeChanged}>
+                  <option value="FTTH-FREESETUP-FREEROUTER" selected>FREE Set Up + Router</option>
+                  <option value="FTTH-PREPAID">Prepaid</option>
+                </select>
             </div>
             </div>
         </div>
