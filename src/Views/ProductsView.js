@@ -1,13 +1,17 @@
 import React, {useContext, useEffect, useState} from 'react';
 import PromoFilterContext from '../React_Context_API/PromoFilterContext';
 import './ProductView.css'
+import { PriceRangeContext, ProductsContext, ProvidersContext, ProvidersSelectedContext, SpeedRangeContext } from '../React_Context_API/FibreProductsContext';
+
 
 const ProductsView = (props) => {
     // // Global State Filters
-    const { providerFilterSelection, updateFilterSelection } = useContext(PromoFilterContext);
-
+    //const { providerFilterSelection, updateFilterSelection } = useContext(PromoFilterContext);
+    const [ priceRangeSelected ] = useContext(PriceRangeContext);
+    const [speedRangeSelected ] = useContext(SpeedRangeContext);
     const [filteredProducts,setFilteredProducts] = useState([]);
-    
+    const [providersSelected] = useContext(ProvidersSelectedContext);
+    //const [products] = useContext(ProductsContext);
 
     // providerFilterSelection.providersSelected.forEach(providerSelected => {
     //     const listOfPairedProductsToProvider = props.summarizedProducts.filter((product) => product.provider.toLowerCase() === providerSelected.toLowerCase());
@@ -31,10 +35,49 @@ const ProductsView = (props) => {
       useEffect(() => {
         
         // BUG seems to be list of providers in the list is not in the list of summarized products
-        const selectedProviderSet = new Set(providerFilterSelection.providersSelected)
-        let selectedProducts = props.summarizedProducts.filter(p => selectedProviderSet.has(p.provider))
-        
-        
+        //const selectedProviderSet = new Set(providerFilterSelection.providersSelected)
+        //let selectedProducts = props.summarizedProducts.filter(p => selectedProviderSet.has(p.provider))
+        let selectedProducts; //= providerFilterSelection.products.filter(p => providerFilterSelection.providersSelected.has(p.provider))
+        if(providersSelected.length > 0 && props.Products.length > 0)
+        {
+          selectedProducts = props.Products.filter(product => providersSelected.some((provider) => provider.name === product.provider))
+          if(selectedProducts && selectedProducts.length > 0)
+          {
+
+            switch(priceRangeSelected)
+            {
+              case '0 - 699':
+              selectedProducts = selectedProducts.filter(product => product.productRate >= 0 && product.productRate <= 699);  
+              break;
+              case '700 - 999':
+              selectedProducts = selectedProducts.filter(product => product.productRate >= 700 && product.productRate <= 999);  
+              break;
+              case '1000+':
+              selectedProducts = selectedProducts.filter(product => product.productRate >= 1000);  
+              break;
+              default:
+              break
+            }
+
+          
+            switch(speedRangeSelected)
+            {
+              // These filter only on Mbps not for GB or Gbps
+              case '0To20':
+              selectedProducts = selectedProducts.filter(product => product.downloadSpeed >= 0 && product.downloadSpeed <= 20);  
+              break;
+              case '20To50':
+              selectedProducts = selectedProducts.filter(product => product.downloadSpeed >= 20 && product.downloadSpeed <= 50);  
+              break;
+              case '50+':
+              selectedProducts = selectedProducts.filter(product => product.downloadSpeed >= 50);  
+              break;
+              default:
+              break
+            }
+
+            setFilteredProducts(selectedProducts);
+        }
         // productCode:
         // 'FTTH-WEBCONNECT-10MB-UNC'
         // productName:
@@ -52,47 +95,47 @@ const ProductsView = (props) => {
 
         // also account for GB and Gbps it should show if any poses any of these values
         // Filter on speed selection
-        if(selectedProducts.length > 0)
-        {
+        // if(selectedProducts && selectedProducts.length > 0)
+        // {
 
-          switch(providerFilterSelection.PriceRangeSelected)
-          {
-            case '0 - 699':
-            selectedProducts = selectedProducts.filter(product => product.productRate >= 0 && product.productRate <= 699);  
-            break;
-            case '700 - 999':
-            selectedProducts = selectedProducts.filter(product => product.productRate >= 700 && product.productRate <= 999);  
-            break;
-            case '1000+':
-            selectedProducts = selectedProducts.filter(product => product.productRate >= 1000);  
-            break;
-            default:
-            break
-          }
+        //   switch(providerFilterSelection.PriceRangeSelected)
+        //   {
+        //     case '0 - 699':
+        //     selectedProducts = selectedProducts.filter(product => product.productRate >= 0 && product.productRate <= 699);  
+        //     break;
+        //     case '700 - 999':
+        //     selectedProducts = selectedProducts.filter(product => product.productRate >= 700 && product.productRate <= 999);  
+        //     break;
+        //     case '1000+':
+        //     selectedProducts = selectedProducts.filter(product => product.productRate >= 1000);  
+        //     break;
+        //     default:
+        //     break
+        //   }
 
           
-          switch(providerFilterSelection.SpeedRangeSelected)
-          {
-            // These filter only on Mbps not for GB or Gbps
-            case '0To20':
-            selectedProducts = selectedProducts.filter(product => product.downloadSpeed >= 0 && product.downloadSpeed <= 20);  
-            break;
-            case '20To50':
-            selectedProducts = selectedProducts.filter(product => product.downloadSpeed >= 20 && product.downloadSpeed <= 50);  
-            break;
-            case '50+':
-            selectedProducts = selectedProducts.filter(product => product.downloadSpeed >= 50);  
-            break;
-            default:
-            break
-          }
+        //   switch(providerFilterSelection.SpeedRangeSelected)
+        //   {
+        //     // These filter only on Mbps not for GB or Gbps
+        //     case '0To20':
+        //     selectedProducts = selectedProducts.filter(product => product.downloadSpeed >= 0 && product.downloadSpeed <= 20);  
+        //     break;
+        //     case '20To50':
+        //     selectedProducts = selectedProducts.filter(product => product.downloadSpeed >= 20 && product.downloadSpeed <= 50);  
+        //     break;
+        //     case '50+':
+        //     selectedProducts = selectedProducts.filter(product => product.downloadSpeed >= 50);  
+        //     break;
+        //     default:
+        //     break
+        //   }
         }
         
 
-        setFilteredProducts(selectedProducts);
+        
 
 
-      },[providerFilterSelection.providersSelected,providerFilterSelection.PriceRangeSelected,providerFilterSelection.SpeedRangeSelected])
+      },[props.Products,priceRangeSelected, providersSelected,speedRangeSelected])
 
   return (
     <div className='container'>

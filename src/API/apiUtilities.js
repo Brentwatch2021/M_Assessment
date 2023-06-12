@@ -28,15 +28,15 @@ export const GetProviders_And_Products = async (dealType) => {
                 case 'openserve web connect':
                 return 'openserve';
                 case 'web connect':
-                return 'openserve';
+                return 'web-connect';
                 case 'frogfoot air':
-                return 'frogfoot';
+                return 'frogfoot-air';
                 case 'link africa':
                 return  'linkafrica';
                 case 'vumatel':
                 return 'vuma';
                 case 'vuma reach':
-                return 'vuma';
+                return 'vuma-reach';
                 case 'clear access':
                 return 'clearaccess';
                 case 'link layer':
@@ -107,6 +107,7 @@ export const GetProviders_And_Products = async (dealType) => {
           
           // free router
           const selectedCampaign = data.campaigns.filter(c => c.code === freeDealtypeRouter)[0];
+          const campains = data.campaigns;
           
           // no router tsek
           //const selectedCampaign = data.campaigns.filter(c => c.code === prepaid)[0];
@@ -115,8 +116,17 @@ export const GetProviders_And_Products = async (dealType) => {
           //const selectedCampaign = data.campaigns.filter(c => c.code === providerFilterSelection.dealTypeSelected)[0];
           
           console.log(selectedCampaign);
+          const allpromocodes = campains.map((campian) => {
+           return campian.promocodes; 
+          })
+          const allpromoCODES = [...allpromocodes[0],...allpromocodes[1]]
 
-          const promoCodes = selectedCampaign.promocodes;
+          // OLD way with only one campa
+          //const promoCodes = selectedCampaign.promocodes;
+          const promoCodes = allpromoCODES
+          
+          
+          
           //VUMA-REACH-RECURRING
           // marketing url
           const marketingBaseUrl = 'https://apigw.mweb.co.za/prod/baas/proxy';
