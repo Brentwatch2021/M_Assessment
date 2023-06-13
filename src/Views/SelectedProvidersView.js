@@ -13,7 +13,7 @@ const SelectedProvidersView = () => {
 
     useEffect(() => {
         // some providers not reacting correctly
-        if(providersSelected && providersSelected.length > 0)
+        if(providersSelected)
         {
             // // Not best practise filter
             setSelectedProviders(providersSelected)
@@ -26,9 +26,17 @@ const SelectedProvidersView = () => {
 
 return (
     <>
+        <div className="d-none d-md-block">
+            <br/>
+            <br/>
+            
         { selectedProviders.map((providerSelected) => 
                 (<ProviderBox selectable={false} key={providerSelected.name} name={providerSelected.name} url={providerSelected.url}/> )
               ) }
+
+            <br/>
+            <br/>
+        </div>
     </>
 );
 

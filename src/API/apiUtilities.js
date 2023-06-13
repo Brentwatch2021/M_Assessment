@@ -54,31 +54,16 @@ export const GetProviders_And_Products = async (dealType) => {
         {
             const provider = subcategory.replace('Uncapped', '').replace('Capped', '').trim();
             productName = productName.replace(provider, '').replace('-', '').trim();
-            // // Download speed extraction permutations
 
-            // 1GB Uncapped Fibre - Lightstruck and the rate is: 1949
-
-            // 1Gb/500Mbps Uncapped Fibre - Thinkspeed Alternate Precincts and the rate is: 1459
-
-
-            //const {downloadSpeed, measurement,uploadSpeed} = getDownloadSpeed(productName);
             const downloadSpeed = getSpeedinMbps(parameters.find(p => p.name === 'downloadSpeed'));
             const measurementPS = 'Mbps';
             const uploadSpeedTotal = getSpeedinMbps(parameters.find(p => p.name === 'uploadSpeed'));
         
             const unthrottled = parameters.find(p => p.name === 'isThrottled')?.value ? true : false;
-            // https://www.mweb.co.za/media/images/providers/provider-vumatel.png
-            // https://www.mweb.co.za/media/images/providers/provider-tt-connect.png
             const imageOfProviderBaseUrl = "https://www.mweb.co.za/media/images/providers";
             const providerUrl = `${imageOfProviderBaseUrl}/provider-${GetProviderImageName(provider.toLowerCase())}.png`;
-            // Seems all mweb promos come with free router and instalation
+            
             const freeRouter = dealType === 'FTTH-FREESETUP-FREEROUTER' ? true : false;
-        
-            //Properties Required to be extracted:
-          
-          
-            //Uncapped Fibre yes/no
-            //image url
 
             return {productCode, productName, productRate, provider,downloadSpeed,measurementPS,uploadSpeedTotal,providerUrl,unthrottled, freeRouter};
         }
@@ -87,17 +72,12 @@ export const GetProviders_And_Products = async (dealType) => {
 
         const getProductsFromPromo = (pc) => {
             const promoCode = pc.promoCode;
-            //const promoCodeTagLine	= pc.promoCodeTagLine;
             return pc.products.reduce((prods, p) => [...prods, getSummarizedProduct(p)], [])
         }
 
-
-
         const response = await fetch('https://apigw.mweb.co.za/prod/baas/proxy/marketing/campaigns/fibre?channels=120&visibility=public');
         const data = await response.json();
-        console.log('Data from mweb:', data);
-
-        // This will be a radio buttons two for both deal types
+  
         const freeDealtypeRouter = 'FTTH-FREESETUP-FREEROUTER';
         const prepaid = 'FTTH-PREPAID';
 
@@ -106,7 +86,7 @@ export const GetProviders_And_Products = async (dealType) => {
           
           
           // free router
-          const selectedCampaign = data.campaigns.filter(c => c.code === freeDealtypeRouter)[0];
+          
           const campains = data.campaigns;
           
           // no router tsek
@@ -115,7 +95,7 @@ export const GetProviders_And_Products = async (dealType) => {
           // Dynamic Campaign hopefully this works
           //const selectedCampaign = data.campaigns.filter(c => c.code === providerFilterSelection.dealTypeSelected)[0];
           
-          console.log(selectedCampaign);
+    
           const allpromocodes = campains.map((campian) => {
            return campian.promocodes; 
           })
@@ -178,24 +158,4 @@ export const GetProviders_And_Products = async (dealType) => {
     }
   };
   
-  export const Get_Products = (selectedProviders,selectedPriceRange,selectedSpeedRange) => {
-    try {
-
-        const products = selectedProviders.map((providers) => {
-
-            // Get products based on selectedPriceRange,selectedSpeedRange
-
-
-        })
-
-        if(products)
-        {
-            return products;
-        }
-        
-    }
-    catch(error)
-    {
-        console.error('Error fetching product data:', error)
-    }
-  }
+  

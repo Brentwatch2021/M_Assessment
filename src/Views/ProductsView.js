@@ -138,78 +138,117 @@ const ProductsView = (props) => {
       },[props.Products,priceRangeSelected, providersSelected,speedRangeSelected])
 
   return (
-    <div className='container'>
-      <div className='row'>
-        {/* TODO Improve the column spacing for all screen sizes */}
-        <div className='col-11 col-sm-12 col-md-12'> 
+    // <div className='container'>
+    //   <div className='row'>
+    //     {/* TODO Improve the column spacing for all screen sizes */}
+    //     <div className='col-11 col-sm-12 col-md-12'> 
         
-        {/* 
+    //     {/* 
           
 
-        */}
-        <div className='d-flex flex-wrap'>
+    //     */}
+    //     <div className='d-flex flex-wrap'>
         
-        {/* {filteredProducts.map((product) => (<p>Name: {product.productName} and the rate is: {product.productRate} AND the download speed is: {product.downloadSpeed} AND the measurment is {product.measurementPS} AND the upload speed is {product.uploadSpeedTotal}</p>))} */}
-        {filteredProducts.map((product) => 
-        (
-          // {productCode, productName, productRate, provider,downloadSpeed,measurementPS,uploadSpeedTotal,providerUrl,unthrottled, freeRouter};
-          <div className='w-50 d-flex flex-column p-3'>
-            <div className='border p-2'>
-              <div className='d-flex flex-wrap justify-content-between'>
-                <div className='d-flex flex-column'>
-                  <span className='productName'>{product.productName}</span>
-                  { product.unthrottled ? <span className='throttling'>Unthrottled </span> :  <span className='throttling'>Unthrottled </span>} 
-                  { product.freeRouter ? <span className='throttling'>FREE Installation + Router</span> :  <span className='throttling'>Recurring Fibre</span>} 
+    //     {/* {filteredProducts.map((product) => (<p>Name: {product.productName} and the rate is: {product.productRate} AND the download speed is: {product.downloadSpeed} AND the measurment is {product.measurementPS} AND the upload speed is {product.uploadSpeedTotal}</p>))} */}
+    //     {filteredProducts.map((product) => 
+    //     (
+    //       // {productCode, productName, productRate, provider,downloadSpeed,measurementPS,uploadSpeedTotal,providerUrl,unthrottled, freeRouter};
+    //       <div className='w-50 d-flex flex-column p-3'>
+    //         <div className='border p-2'>
+    //           <div className='d-flex flex-wrap justify-content-between'>
+    //             <div className='d-flex flex-column'>
+    //               <span className='productName'>{product.productName}</span>
+    //               { product.unthrottled ? <span className='throttling'>Unthrottled </span> :  <span className='throttling'>Unthrottled </span>} 
+    //               { product.freeRouter ? <span className='throttling'>FREE Installation + Router</span> :  <span className='throttling'>Recurring Fibre</span>} 
                   
-                </div>
-                <div className='d-flex flex-wrap justify-content-between  p-2 border'>
-                     <div className='d-flex flex-column p-2'>
-                          <div class="d-flex justify-content-center align-items-center">
-                              <span class="text-center"><i class="bi bi-arrow-down"></i></span>
-                          </div>
-                        <span>Download</span> 
-                        <span>{product.downloadSpeed}{product.measurementPS}</span> 
-                     </div>
-                     <div className='d-flex flex-column p-2'>
-                          <div class="d-flex justify-content-center align-items-center">
-                              <span class="text-center"><i class="bi bi-arrow-up"></i></span>
-                          </div>
-                        <span>Upload</span> 
-                        <span>{product.uploadSpeedTotal}{product.measurementPS}</span> 
-                     </div>
-                </div>
-              </div>
-              <div className='d-flex flex-wrap justify-content-around p-4'>
-                <div><span className='rateStyle'>R{product.productRate}pm</span></div>
-                <div> <img src={product.providerUrl} alt={product.provider}></img> </div>
-                <div> <button className='coverageButton p-2'>Check Coverage</button> </div>
-              </div>
+    //             </div>
+    //             <div className='d-flex flex-wrap justify-content-between  p-2 border'>
+    //                  <div className='d-flex flex-column p-2'>
+    //                       <div class="d-flex justify-content-center align-items-center">
+    //                           <span class="text-center"><i class="bi bi-arrow-down"></i></span>
+    //                       </div>
+    //                     <span>Download</span> 
+    //                     <span>{product.downloadSpeed}{product.measurementPS}</span> 
+    //                  </div>
+    //                  <div className='d-flex flex-column p-2'>
+    //                       <div class="d-flex justify-content-center align-items-center">
+    //                           <span class="text-center"><i class="bi bi-arrow-up"></i></span>
+    //                       </div>
+    //                     <span>Upload</span> 
+    //                     <span>{product.uploadSpeedTotal}{product.measurementPS}</span> 
+    //                  </div>
+    //             </div>
+    //           </div>
+    //           <div className='d-flex flex-wrap justify-content-around p-4'>
+    //             <div><span className='rateStyle'>R{product.productRate}pm</span></div>
+    //             <div> <img src={product.providerUrl} alt={product.provider}></img> </div>
+    //             <div> <button className='coverageButton p-2'>Check Coverage</button> </div>
+    //           </div>
+    //         </div>
+    //       {/* <div>
+    //         <div>
+    //           <p>{product.productName}</p>
+    //           {product.unthrottled ? <p>Unthrottled</p> : <p>Throttled</p>} 
+    //           {product.freeRouter ? <p>Free Router and Instalation</p> : <p>Prepaid</p>}
+    //         </div>
+    //         <div>
+    //           <p>Download Speed: {product.downloadSpeed}</p>
+    //           <p>Upload Speed: {product.uploadSpeedTotal}</p>
+    //         <div/>
+    //       <div/>
+    //       <div/>
+          
+    //       <p>ProductRate: R{product.productRate}</p>
+          
+    //       <img src={product.providerUrl} alt={product.provider}></img> 
+          
+          
+          
+    //       </div> */}
+    //       </div>
+    //     ))}
+    //       </div>
+    //       </div>
+    //     </div>
+    // </div>
+
+    // This is for prototyping to find the perfect body to setup this item
+    <div className='container'> 
+      <div className='row g-3'>
+          {filteredProducts.map((product) => (
+                  <div className='col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6'>
+                  <div className='d-flex flex-wrap justify-content-between'>
+                    <div className='d-flex flex-column'>
+                      <span className='productName'>{product.productName}</span>
+                      { product.unthrottled ? <span className='throttling'>Unthrottled </span> :  <span className='throttling'>Unthrottled </span>} 
+                      { product.freeRouter ? <span className='throttling'>FREE Installation + Router</span> :  <span className='throttling'>Recurring Fibre</span>} 
+                      
+                    </div>
+                    <div className='d-flex flex-wrap justify-content-between  p-2 border'>
+                         <div className='d-flex flex-column p-2'>
+                              <div class="d-flex justify-content-center align-items-center">
+                                  <span class="text-center"><i class="bi bi-arrow-down"></i></span>
+                              </div>
+                            <span>Download</span> 
+                            <span>{product.downloadSpeed}{product.measurementPS}</span> 
+                         </div>
+                         <div className='d-flex flex-column p-2'>
+                              <div class="d-flex justify-content-center align-items-center">
+                                  <span class="text-center"><i class="bi bi-arrow-up"></i></span>
+                              </div>
+                            <span>Upload</span> 
+                            <span>{product.uploadSpeedTotal}{product.measurementPS}</span> 
+                         </div>
+                    </div>
+                  </div>
+                  <div className='d-flex flex-wrap justify-content-around p-4'>
+                    <div><span className='rateStyle'>R{product.productRate}pm</span></div>
+                    <div> <img src={product.providerUrl} alt={product.provider}></img> </div>
+                    <div> <button className='coverageButton p-2'>Check Coverage</button> </div>
+                  </div>
             </div>
-          {/* <div>
-            <div>
-              <p>{product.productName}</p>
-              {product.unthrottled ? <p>Unthrottled</p> : <p>Throttled</p>} 
-              {product.freeRouter ? <p>Free Router and Instalation</p> : <p>Prepaid</p>}
-            </div>
-            <div>
-              <p>Download Speed: {product.downloadSpeed}</p>
-              <p>Upload Speed: {product.uploadSpeedTotal}</p>
-            <div/>
-          <div/>
-          <div/>
-          
-          <p>ProductRate: R{product.productRate}</p>
-          
-          <img src={product.providerUrl} alt={product.provider}></img> 
-          
-          
-          
-          </div> */}
-          </div>
-        ))}
-          </div>
-          </div>
-        </div>
+          ))}
+      </div>
     </div>
   );
 };

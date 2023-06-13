@@ -1,4 +1,4 @@
-import React,{useState,useContext, useEffect} from 'react'
+import React,{useState,useContext, useEffect, useRef} from 'react'
 import PromoFilterContext from '../React_Context_API/PromoFilterContext';
 import ProviderBox from '../Components/ProviderBox/ProviderBox';
 import { useSearchParams } from 'react-router-dom';
@@ -6,7 +6,7 @@ import SelectedProvidersView from './SelectedProvidersView';
 import ProductsView from './ProductsView';
 import { PriceRangeContext, ProductsContext, ProvidersContext, ProvidersSelectedContext, SpeedRangeContext } from '../React_Context_API/FibreProductsContext';
 import { GetProviders_And_Products } from '../API/apiUtilities';
-
+import './HomeView.css'
 
 const HomeView = (props) => {
 
@@ -186,24 +186,56 @@ const HomeView = (props) => {
 
 
 
+        const containerRef = useRef(null);
+
+        const scrollLeft = () => {
+            containerRef.current.scrollBy({
+            left: -200, // Adjust the value as per your requirement
+            behavior: 'smooth' // Add smooth scrolling effect
+        });
+        };
+
+        const scrollRight = () => {
+            containerRef.current.scrollBy({
+            left: 200, // Adjust the value as per your requirement
+            behavior: 'smooth' // Add smooth scrolling effect
+          });
+          };
+
+
 
 
     return(
         <>
-    <div className="App">
-      <h1>Fibre Products</h1>
-      <h4>Select a Fibre infrastructure provider below browse the products available and complete a coverage search</h4>
-      {localProviders.map((p) => (<><ProviderBox selectable={true} key={p.name} name={p.name} url={p.url}/></>))}
+    {/* <div className="App"> */}
+     <div className="container"> 
+      <div className='d-flex m-5 flex-column align-items-center'>
+        <h4 className='font-weight-bold'>Fibre Products</h4>
+        <div className='text-center'>
+        <span className='d-inline'>Select a Fibre infrastructure provider below browse the products available and complete a coverage search</span>
+        </div>
+        
+      </div>
+
+      <div className='d-flex flex-wrap justify-content-center'>
+      <button onClick={scrollLeft}><i className="bi bi-arrow-left-circle-fill"></i></button>
+      <div className="w-50 horizontal-scrollable d-flex flex-nowrap overflow-auto scrollbar-hidden" ref={containerRef}>
+              {localProviders.map((p) => (<><ProviderBox selectable={true} key={p.name} name={p.name} url={p.url}/></>))}        
+      </div>
+      <button onClick={scrollRight}><i className='bi bi-arrow-right-circle-fill'></i></button>
+      </div>
+
+
+
+      {/* {localProviders.map((p) => (<><ProviderBox selectable={true} key={p.name} name={p.name} url={p.url}/></>))} */}
       
     </div>
-    <br></br>
-    <br></br>
-    <br></br>
-    <br></br>
+    
     <div className='container'>
     <div className='row'>
-      <div className='col-10 col-sm-10 col-md-12 col-lg-12 col-xl-8'>
-        <div className='d-flex flex-wrap justify-content-between'>
+      <div className='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12'>
+      <span className='d-flex justify-content-center'>Select Filters Below</span>
+        <div className='d-flex flex-wrap justify-content-center'>
           <div className='d-flex flex-column'>
             <span>Filter By: </span>
             <div className='d-flex flex-wrap gap-3'>
@@ -221,24 +253,20 @@ const HomeView = (props) => {
                 </select>
             </div>
           </div>
-          <div className='col-6'>
-            <div className='d-flex flex-column'>
-              <span>Deal Type: </span>
-                {/* <span className='bg-primary text-white p-3 text-center'>FREE Set Up + Router</span> */}
-                {/* <select className='p-2' value={providerFilterSelection.DealTypeSelected} onChange={handleDealTypeChanged}>
-                  <option value="FTTH-FREESETUP-FREEROUTER" selected>FREE Set Up + Router</option>
-                  <option value="FTTH-PREPAID">Prepaid</option>
-                </select> */}
-            </div>
-            </div>
+          
             {/* providers selected */}
-            <div>
-              <SelectedProvidersView/>
-            </div>
+            
           <div>
+          {/* <div className='d-flex justify-content-center'>
+              <SelectedProvidersView/>
+          </div> */}
 
           </div>
+          
         </div>
+        <div className='d-flex justify-content-center'>
+              <SelectedProvidersView/>
+          </div>
       </div>
     </div>  
 </div>
