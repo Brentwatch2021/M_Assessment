@@ -69,26 +69,26 @@ const ProductsView = (props) => {
     
     <div className='container'> 
       <div className='row g-3'>
-          {filteredProducts.map((product) => (
-                  <div className='col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6'>
+          {filteredProducts.map((product,index) => (
+                  <div key={`${index}${product.productName}${product.productCode}productkey`} className='col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6'>
                   <div className='d-flex flex-wrap justify-content-between'>
                     <div className='d-flex flex-column'>
                       <span className='productName'>{product.productName}</span>
                       { product.unthrottled ? <span className='throttling'>Unthrottled </span> :  <span className='throttling'>Unthrottled </span>} 
-                      { product.freeRouter ? <span className='throttling'>FREE Installation + Router</span> :  <span className='throttling'>Recurring Fibre</span>} 
+                      {/* { product.freeRouter ? <span className='throttling'>FREE Installation + Router</span> :  <span className='throttling'>Recurring Fibre</span>}  */}
                       
                     </div>
                     <div className='d-flex flex-wrap justify-content-between  p-2 border'>
                          <div className='d-flex flex-column p-2'>
-                              <div class="d-flex justify-content-center align-items-center">
-                                  <span class="text-center"><i class="bi bi-arrow-down"></i></span>
+                              <div className="d-flex justify-content-center align-items-center">
+                                  <span className="text-center"><i className="bi bi-arrow-down"></i></span>
                               </div>
                             <span>Download</span> 
                             <span>{product.downloadSpeed}{product.measurementPS}</span> 
                          </div>
                          <div className='d-flex flex-column p-2'>
-                              <div class="d-flex justify-content-center align-items-center">
-                                  <span class="text-center"><i class="bi bi-arrow-up"></i></span>
+                              <div className="d-flex justify-content-center align-items-center">
+                                  <span className="text-center"><i className="bi bi-arrow-up"></i></span>
                               </div>
                             <span>Upload</span> 
                             <span>{product.uploadSpeedTotal}{product.measurementPS}</span> 

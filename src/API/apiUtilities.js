@@ -50,10 +50,10 @@ export const GetProviders_And_Products = async (dealType) => {
             }
         }
 
-        const getSummarizedProduct = ({productCode, productName, productRate, subcategory,parameters},promoCodeTagline) => 
+        const getSummarizedProduct = ({productCode,friendlyName, productName, productRate, subcategory,parameters},promoCodeTagline) => 
         {
             const provider = subcategory.replace('Uncapped', '').replace('Capped', '').trim();
-            productName = productName.replace(provider, '').replace('-', '').trim();
+            productName = friendlyName;//productName.replace(provider, '').replace('-', '').trim();
 
             const downloadSpeed = getSpeedinMbps(parameters.find(p => p.name === 'downloadSpeed'));
             const measurementPS = 'Mbps';

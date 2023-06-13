@@ -84,7 +84,7 @@ const HomeView = (props) => {
       <div className='d-flex flex-wrap justify-content-center'>
       <button onClick={scrollLeft}><i className="bi bi-arrow-left-circle-fill"></i></button>
       <div className="w-50 horizontal-scrollable d-flex flex-nowrap overflow-auto scrollbar-hidden" ref={containerRef}>
-              {localProviders.map((p) => (<><ProviderBox selectable={true} key={p.name} name={p.name} url={p.url}/></>))}        
+              {localProviders.map((p,index) => (<ProviderBox selectable={true} key={`providerbox${p.name}${p.url}${index}`} name={p.name} url={p.url}/>))}        
       </div>
       <button onClick={scrollRight}><i className='bi bi-arrow-right-circle-fill'></i></button>
       </div>
