@@ -21,6 +21,6 @@
   }
   
   .checkbox-container input[type="checkbox"]:checked + label {
-    border-color: blue; /* Custom selected border color */
+    border-color: blue; 
     opacity: 1;
   }

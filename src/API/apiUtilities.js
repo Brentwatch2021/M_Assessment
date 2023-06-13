@@ -63,7 +63,7 @@ export const GetProviders_And_Products = async (dealType) => {
             const imageOfProviderBaseUrl = "https://www.mweb.co.za/media/images/providers";
             const providerUrl = `${imageOfProviderBaseUrl}/provider-${GetProviderImageName(provider.toLowerCase())}.png`;
             
-            const freeRouter = dealType === 'FTTH-FREESETUP-FREEROUTER' ? true : false;
+            const freeRouter = false;
 
             return {productCode, productName, productRate, provider,downloadSpeed,measurementPS,uploadSpeedTotal,providerUrl,unthrottled, freeRouter};
         }
@@ -81,56 +81,25 @@ export const GetProviders_And_Products = async (dealType) => {
         const freeDealtypeRouter = 'FTTH-FREESETUP-FREEROUTER';
         const prepaid = 'FTTH-PREPAID';
 
-        // Filter on selected campaign
+        
         if (data && data.campaigns.length > 0) {
           
-          
-          // free router
-          
           const campains = data.campaigns;
-          
-          // no router tsek
-          //const selectedCampaign = data.campaigns.filter(c => c.code === prepaid)[0];
-
-          // Dynamic Campaign hopefully this works
-          //const selectedCampaign = data.campaigns.filter(c => c.code === providerFilterSelection.dealTypeSelected)[0];
-          
-    
           const allpromocodes = campains.map((campian) => {
            return campian.promocodes; 
           })
           const allpromoCODES = [...allpromocodes[0],...allpromocodes[1]]
-
-          // OLD way with only one campa
-          //const promoCodes = selectedCampaign.promocodes;
           const promoCodes = allpromoCODES
-          
-          
-          
-          //VUMA-REACH-RECURRING
-          // marketing url
           const marketingBaseUrl = 'https://apigw.mweb.co.za/prod/baas/proxy';
-          // https://apigw.mweb.co.za/prod/baas/proxy/marketing/products/promos/VUMA-REACH-RECURRING?sellable_online=true
           const promoCodesAPIURL = `${marketingBaseUrl}/marketing/products/promos/${promoCodes.join(',')}?sellable_online=true`;
-          console.log(promoCodesAPIURL)
-          // promo Products
+          
           const promocodeProductsResponse = await fetch(promoCodesAPIURL);
           const promocodeProducts = await promocodeProductsResponse.json();
 
-          // filters to add to filtering for all products: promoCodeCategory
-          // take provider and list products using map method
           if(promocodeProducts)
           {
-            // setProdcuts(promocodeProducts.map((promocodeProduct) => ({
-            //   providerName: promocodeProduct.provider,
-            //   products: promocodeProduct.products
-            // })))
-
-            //setProducts(promocodeProducts);
-            //products = promocodeProducts;
-            const summarizedProducts_ =  promocodeProducts.reduce((prods, pc) => [...prods, ...getProductsFromPromo(pc)], [])
             
-            //setSummarizedProducts(summarizedProducts);
+            const summarizedProducts_ =  promocodeProducts.reduce((prods, pc) => [...prods, ...getProductsFromPromo(pc)], [])
             summarizedProducts = summarizedProducts_;
             
             const imageOfProviderBaseUrl = "https://www.mweb.co.za/media/images/providers";
@@ -145,8 +114,6 @@ export const GetProviders_And_Products = async (dealType) => {
               url: `${imageOfProviderBaseUrl}/provider-${GetProviderImageName(item.provider.toLowerCase())}.png`,  
             }));
 
-            // Set Providers from sumarized products
-            //setProviderss(providerItems);
             summarizedProviders = providerItems;
             return { summarizedProviders, summarizedProducts}
           }
