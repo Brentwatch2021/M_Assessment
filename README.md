@@ -1,14 +1,19 @@
-# M Assessment 
+Assessment for Mweb
 
-## Requirements:
+React Concepts used in this project is the following:
 
-    1. Use the API to get Fibre products for all providers
-    2. Display icons for each provider
-    3. Multiple select providers and only display products associated with the selected providers
-    4. Filter by price range.
-    5. Filter by speed range
+ - Component-based architecture
+ - JSX
+ - State Management (React Context)
+ - Props and data flow
+ - Component lifecycle
+ - React hooks
+    - UseEffect
+    - UseContext
+    - UseState
+    - UseRef
 
+I used bootstrap for the mobile layout.
 
-
-    Double check all provider url images with global online
+Link to Live site of the Assessment: [Live Site]([URL](https://inquisitive-churros-fbd92a.netlify.app/))
 
