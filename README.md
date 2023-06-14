@@ -15,5 +15,4 @@ React Concepts used in this project is the following:
 
 I used bootstrap for the mobile layout.
 
-Link to Live site of the Assessment: [Live Site]([URL](https://inquisitive-churros-fbd92a.netlify.app/))
 
