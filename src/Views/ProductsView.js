@@ -15,11 +15,11 @@ const ProductsView = (props) => {
       useEffect(() => {
         
         
-        let selectedProducts; 
+        let selectedProducts = []; 
         if(providersSelected.length > 0 && props.Products.length > 0)
         {
           selectedProducts = props.Products.filter(product => providersSelected.some((provider) => provider.name === product.provider))
-          if(selectedProducts && selectedProducts.length > 0)
+          if(selectedProducts)
           {
 
             switch(priceRangeSelected)
@@ -53,11 +53,11 @@ const ProductsView = (props) => {
               default:
               break
             }
-
-            setFilteredProducts(selectedProducts);
         }
         
         }
+
+        setFilteredProducts(selectedProducts)
 
       },[props.Products,priceRangeSelected, providersSelected,speedRangeSelected])
 

@@ -18,9 +18,15 @@
     border: 2px solid #ccc;
     cursor: pointer;
     opacity: 0.30;
+    filter: grayscale(100%);
   }
   
   .checkbox-container input[type="checkbox"]:checked + label {
     border-color: blue; 
     opacity: 1;
+    filter: grayscale(0%);
+  }
+
+  .black-and-white {
+    filter:grayscale(100%)
   }

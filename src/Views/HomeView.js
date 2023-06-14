@@ -50,20 +50,27 @@ const HomeView = (props) => {
 
 
 
-        const containerRef = useRef(null);
+        const providerCarouselRef = useRef(null);
 
         const scrollLeft = () => {
-            containerRef.current.scrollBy({
-            left: -150, 
-            behavior: 'smooth' 
-        });
+          if(providerCarouselRef !== null)
+          {
+              providerCarouselRef.current.scrollBy({
+                left: -150, 
+                behavior: 'smooth' 
+              });
+          }
         };
 
         const scrollRight = () => {
-            containerRef.current.scrollBy({
-            left: 150, 
-            behavior: 'smooth' 
-          });
+          if(providerCarouselRef !== null)
+          {
+            providerCarouselRef.current.scrollBy({
+              left: 150, 
+              behavior: 'smooth' 
+            });
+          }
+            
           };
 
 
@@ -78,16 +85,23 @@ const HomeView = (props) => {
         <div className='text-center'>
         <span className='d-inline'>Select a Fibre infrastructure provider below browse the products available and complete a coverage search</span>
         </div>
-        
       </div>
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col d-flex align-items-center">
+            <button onClick={scrollLeft} className="btn mr-auto"><img src={process.env.PUBLIC_URL + '/arrow-left.png'} alt={'arrow-left'}></img></button>
+          <div className="overflow-auto col-10 col-sm-10 col-md-11 col-lg-11 col-xl-11 col-xxl-11 scrollbar-hidden"
+           ref={providerCarouselRef}>
+            <div className="mx-auto d-flex">
+            {localProviders.map((p,index) => (<ProviderBox selectable={true} key={`providerbox${p.name}${p.url}${index}`} name={p.name} url={p.url}/>))}        
+            </div>
+      </div>
+      <button onClick={scrollRight} className="btn ml-auto"><img src={process.env.PUBLIC_URL + '/arrow-right.png'} alt="arrow-right" />
+</button>
+    </div>
+  </div>
+</div>
 
-      <div className='d-flex flex-wrap justify-content-center'>
-      <button onClick={scrollLeft}><i className="bi bi-arrow-left-circle-fill"></i></button>
-      <div className="w-50 horizontal-scrollable d-flex flex-nowrap overflow-auto scrollbar-hidden" ref={containerRef}>
-              {localProviders.map((p,index) => (<ProviderBox selectable={true} key={`providerbox${p.name}${p.url}${index}`} name={p.name} url={p.url}/>))}        
-      </div>
-      <button onClick={scrollRight}><i className='bi bi-arrow-right-circle-fill'></i></button>
-      </div>
       
     </div>
     
@@ -99,13 +113,13 @@ const HomeView = (props) => {
           <div className='d-flex flex-column'>
             <span>Filter By: </span>
             <div className='d-flex flex-wrap gap-3'>
-                <select className='p-2' value={priceRangeSelected} onChange={handlePriceChange}>
+                <select className='form-select p-2' value={priceRangeSelected} onChange={handlePriceChange}>
                   <option value="Price">Price</option>
                   <option value="0 - 699">R0 - R699</option>
                   <option value="700 - 999" >R700 - R999</option>
                   <option value="1000+">R1000+</option>
                 </select>
-                <select className='p-2' value={speedRangeSelected} onChange={handleSpeedChange}>
+                <select className='form-select p-2' value={speedRangeSelected} onChange={handleSpeedChange}>
                   <option value="Speed">Speed</option>
                   <option value="0To20">0Mbps to 20Mbps</option>
                   <option value="20To50" >20 to 50 Mbps</option>

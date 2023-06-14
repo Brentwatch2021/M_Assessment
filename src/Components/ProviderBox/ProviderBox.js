@@ -29,7 +29,7 @@ const ProviderBox = (props) => {
      <div className="checkbox-container">
         <input className='checkbox_styled' onChange={handleCheckBoxSelected} type="checkbox" url_for_state_update={props.url} name_for_state_update={props.name} id={props.name} />  
          <label style={{ backgroundImage: `url(${props.url})`}} htmlFor={props.name}></label> 
-    </div> : <div className='checkbox-container'>  <label style={{backgroundImage: `url(${props.url})`, opacity: 1}}></label> </div> }
+    </div> : <div className='checkbox-container'>  <label style={{backgroundImage: `url(${props.url})`, opacity: 1, filter: 'grayscale(0%)'}}></label> </div> }
     </>
   );
 };
