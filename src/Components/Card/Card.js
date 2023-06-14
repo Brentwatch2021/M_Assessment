@@ -1,6 +1,19 @@
+import { useNavigate } from 'react-router-dom'
+
 const Card = (props) => {
+  const navigate = useNavigate();
+
+
+  //id_for_product_details_page={props.product.id} promocode_for_product_details_page={props.product.id}
+  const handledetailsPageView = (event) => {
+    const id_For_Product = event.target.getAttribute("id_for_product_details_page");
+    const promoCodeForProduct = event.target.getAttribute("promocode_for_product_details_page");
+    navigate(`/productDetails/${promoCodeForProduct}/${id_For_Product}`);
+  }
+
+
     return (
-        <div className='col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6'>
+        <div className={props.Fullscreen ? 'col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12' : 'col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6'}>
                   <div className='d-flex flex-wrap justify-content-between'>
                     <div className='d-flex flex-column'>
                       <span className='productName'>{props.product.productName}</span>
@@ -26,7 +39,7 @@ const Card = (props) => {
                   <div className='d-flex flex-wrap justify-content-around p-4'>
                     <div><span className='rateStyle'>R{props.product.productRate}pm</span></div>
                     <div> <img src={props.product.providerUrl} alt={props.product.provider}></img> </div>
-                    <div> <button className='coverageButton p-2'>Check Coverage</button> </div>
+                    <div> {props.Fullscreen ? null : <button id_for_product_details_page={props.product.idFromProduct} promocode_for_product_details_page={props.product.promoCode_From_codes} onClick={handledetailsPageView} className='coverageButton p-2'>View Details</button>} </div>
                   </div>
             </div>  
     )

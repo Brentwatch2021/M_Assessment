@@ -86,14 +86,18 @@ const HomeView = (props) => {
         <span className='d-inline'>Select a Fibre infrastructure provider below browse the products available and complete a coverage search</span>
         </div>
       </div>
-      <div className="container-fluid">
+      <div className="container-fluid px-0 mx-0">
         <div className="row">
-          <div className="col d-flex align-items-center">
+          <div className="col-12 d-flex align-items-center">
             <button onClick={scrollLeft} className="btn mr-auto"><img src={process.env.PUBLIC_URL + '/arrow-left.png'} alt={'arrow-left'}></img></button>
-          <div className="overflow-auto col-10 col-sm-10 col-md-11 col-lg-11 col-xl-11 col-xxl-11 scrollbar-hidden"
+          <div className="overflow-auto px-0 mx-0 scrollbar-hidden"
            ref={providerCarouselRef}>
             <div className="mx-auto d-flex">
-            {localProviders.map((p,index) => (<ProviderBox selectable={true} key={`providerbox${p.name}${p.url}${index}`} name={p.name} url={p.url}/>))}        
+            { localProviders.length > 0 ?
+            localProviders.map
+            ((p,index) => 
+            (<ProviderBox selectable={true} key={`providerbox${p.name}${p.url}${index}`} name={p.name} url={p.url}/>
+            ))    :  <p className='d-flex align-items-center'>Loading</p>   }        
             </div>
       </div>
       <button onClick={scrollRight} className="btn ml-auto"><img src={process.env.PUBLIC_URL + '/arrow-right.png'} alt="arrow-right" />

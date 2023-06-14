@@ -6,20 +6,7 @@ export const GetProviders_And_Products = async (dealType) => {
         let summarizedProviders;
         let summarizedProducts;
 
-        const getSpeedinMbps = (productSpeed) =>
-        {
-            if(productSpeed)
-            {
-                const kbpsIndex = productSpeed.value.indexOf('KBPS')
-                const speed = productSpeed.value.substring(0, kbpsIndex - 1).trim();
-                let downloadSpeed = parseInt(speed);
-                downloadSpeed = downloadSpeed / 1000;
-                if(downloadSpeed)
-                {
-                    return Math.floor(downloadSpeed);
-                }
-            }
-        }
+        
 
         const GetProviderImageName = (provider) => 
         {
@@ -50,11 +37,11 @@ export const GetProviders_And_Products = async (dealType) => {
             }
         }
 
-        const getSummarizedProduct = ({productCode,friendlyName, productName, productRate, subcategory,parameters},promoCodeTagline) => 
+        const getSummarizedProduct = ({id,productCode,friendlyName, productName, productRate, subcategory,parameters},promoCode) => 
         {
             const provider = subcategory.replace('Uncapped', '').replace('Capped', '').trim();
-            productName = friendlyName;//productName.replace(provider, '').replace('-', '').trim();
-
+            productName = friendlyName;
+            const idFromProduct = id;
             const downloadSpeed = getSpeedinMbps(parameters.find(p => p.name === 'downloadSpeed'));
             const measurementPS = 'Mbps';
             const uploadSpeedTotal = getSpeedinMbps(parameters.find(p => p.name === 'uploadSpeed'));
@@ -62,18 +49,18 @@ export const GetProviders_And_Products = async (dealType) => {
             const unthrottled = parameters.find(p => p.name === 'isThrottled')?.value ? true : false;
             const imageOfProviderBaseUrl = "https://www.mweb.co.za/media/images/providers";
             const providerUrl = `${imageOfProviderBaseUrl}/provider-${GetProviderImageName(provider.toLowerCase())}.png`;
-            
+            const promoCode_From_codes = promoCode;
             const freeRouter = false;
 
-            return {productCode, productName, productRate, provider,downloadSpeed,measurementPS,uploadSpeedTotal,providerUrl,unthrottled, freeRouter};
+            return {idFromProduct,promoCode_From_codes,productCode, productName,productRate, provider,downloadSpeed,measurementPS,uploadSpeedTotal,providerUrl,unthrottled, freeRouter};
         }
 
 
 
         const getProductsFromPromo = (pc) => {
-            const promoCode = pc.promoCode;
-            return pc.products.reduce((prods, p) => [...prods, getSummarizedProduct(p)], [])
-        }
+          const promoCode = pc.promoCode;
+          return pc.products.reduce((prods, p) => [...prods, getSummarizedProduct(p,promoCode)], [])
+      }
 
         const response = await fetch('https://apigw.mweb.co.za/prod/baas/proxy/marketing/campaigns/fibre?channels=120&visibility=public');
         const data = await response.json();
@@ -124,5 +111,95 @@ export const GetProviders_And_Products = async (dealType) => {
       throw error;
     }
   };
+
+
+  const getSpeedinMbps = (productSpeed) =>
+  {
+      if(productSpeed)
+      {
+          const kbpsIndex = productSpeed.value.indexOf('KBPS')
+          const speed = productSpeed.value.substring(0, kbpsIndex - 1).trim();
+          let downloadSpeed = parseInt(speed);
+          downloadSpeed = downloadSpeed / 1000;
+          if(downloadSpeed)
+          {
+              return Math.floor(downloadSpeed);
+          }
+      }
+  }
+
+  const GetProviderImageName = (provider) => 
+        {
+            switch(provider)
+            {
+                case 'openserve web connect':
+                return 'openserve';
+                case 'web connect':
+                return 'web-connect';
+                case 'frogfoot air':
+                return 'frogfoot-air';
+                case 'link africa':
+                return  'linkafrica';
+                case 'vumatel':
+                return 'vuma';
+                case 'vuma reach':
+                return 'vuma-reach';
+                case 'clear access':
+                return 'clearaccess';
+                case 'link layer':
+                return 'link-layer';
+                case 'mfn':
+                return 'metrofibre';
+                case 'tt connect':
+                return 'tt-connect';
+                default:
+                return provider;
+            }
+        }
+
+
+  export const getSummarizedProduct = ({id,productCode,friendlyName, productName, productRate, subcategory,parameters},promoCode) => 
+        {
+            const provider = subcategory.replace('Uncapped', '').replace('Capped', '').trim();
+            productName = friendlyName;
+            const idFromProduct = id;
+            const downloadSpeed = getSpeedinMbps(parameters.find(p => p.name === 'downloadSpeed'));
+            const measurementPS = 'Mbps';
+            const uploadSpeedTotal = getSpeedinMbps(parameters.find(p => p.name === 'uploadSpeed'));
+        
+            const unthrottled = parameters.find(p => p.name === 'isThrottled')?.value ? true : false;
+            const imageOfProviderBaseUrl = "https://www.mweb.co.za/media/images/providers";
+            const providerUrl = `${imageOfProviderBaseUrl}/provider-${GetProviderImageName(provider.toLowerCase())}.png`;
+            const promoCode_From_codes = promoCode;
+            const freeRouter = false;
+
+            return {idFromProduct,promoCode_From_codes,productCode, productName,productRate, provider,downloadSpeed,measurementPS,uploadSpeedTotal,providerUrl,unthrottled, freeRouter};
+    }
+
+ export const GetProductFromApi = async (productId,promoCode) =>
+ {
+    try 
+    {
+      const productsUrlFromPromo = `https://apigw.mweb.co.za/prod/baas/proxy/marketing/products/promos/${promoCode}?sellable_online=true`;
+      
+      const product = await axios.get(`${productsUrlFromPromo}`).then
+                        (resp => {
+                          const promotion = resp.data.filter(promo => promo.promoCode === promoCode)[0]; //.products.map((product) => product.id === parseInt(productId))
+                          if(promotion)
+                          {
+                            return promotion.products.filter(p => p.id === productId);
+                          }
+                        });
+      if(product && product.length > 0)
+      {
+        console.log(product[0]);
+        return getSummarizedProduct(product[0],promoCode);
+      }
+    }
+    catch(error)
+    {
+
+    }
+ }
   
   
