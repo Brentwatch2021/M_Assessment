@@ -6,57 +6,6 @@ export const GetProviders_And_Products = async (dealType) => {
         let summarizedProviders;
         let summarizedProducts;
 
-        
-
-        const GetProviderImageName = (provider) => 
-        {
-            switch(provider)
-            {
-                case 'openserve web connect':
-                return 'openserve';
-                case 'web connect':
-                return 'web-connect';
-                case 'frogfoot air':
-                return 'frogfoot-air';
-                case 'link africa':
-                return  'linkafrica';
-                case 'vumatel':
-                return 'vuma';
-                case 'vuma reach':
-                return 'vuma-reach';
-                case 'clear access':
-                return 'clearaccess';
-                case 'link layer':
-                return 'link-layer';
-                case 'mfn':
-                return 'metrofibre';
-                case 'tt connect':
-                return 'tt-connect';
-                default:
-                return provider;
-            }
-        }
-
-        const getSummarizedProduct = ({id,productCode,friendlyName, productName, productRate, subcategory,parameters},promoCode) => 
-        {
-            const provider = subcategory.replace('Uncapped', '').replace('Capped', '').trim();
-            productName = friendlyName;
-            const idFromProduct = id;
-            const downloadSpeed = getSpeedinMbps(parameters.find(p => p.name === 'downloadSpeed'));
-            const measurementPS = 'Mbps';
-            const uploadSpeedTotal = getSpeedinMbps(parameters.find(p => p.name === 'uploadSpeed'));
-        
-            const unthrottled = parameters.find(p => p.name === 'isThrottled')?.value ? true : false;
-            const imageOfProviderBaseUrl = "https://www.mweb.co.za/media/images/providers";
-            const providerUrl = `${imageOfProviderBaseUrl}/provider-${GetProviderImageName(provider.toLowerCase())}.png`;
-            const promoCode_From_codes = promoCode;
-            const freeRouter = false;
-
-            return {idFromProduct,promoCode_From_codes,productCode, productName,productRate, provider,downloadSpeed,measurementPS,uploadSpeedTotal,providerUrl,unthrottled, freeRouter};
-        }
-
-
-
         const getProductsFromPromo = (pc) => {
           const promoCode = pc.promoCode;
           return pc.products.reduce((prods, p) => [...prods, getSummarizedProduct(p,promoCode)], [])
@@ -85,13 +34,10 @@ export const GetProviders_And_Products = async (dealType) => {
 
           if(promocodeProducts)
           {
-            
             const summarizedProducts_ =  promocodeProducts.reduce((prods, pc) => [...prods, ...getProductsFromPromo(pc)], [])
             summarizedProducts = summarizedProducts_;
-            
-            const imageOfProviderBaseUrl = "https://www.mweb.co.za/media/images/providers";
-
-            
+ 
+            const imageOfProviderBaseUrl = "https://www.mweb.co.za/media/images/providers";            
             const providerItems = summarizedProducts.filter((item, index, self) => {
               const lowercaseProvider = item.provider.toLowerCase();
               return (index === self.findIndex(i => i.provider.toLowerCase().includes(lowercaseProvider) || lowercaseProvider.includes(i.provider.toLowerCase())));
