@@ -21,9 +21,6 @@ return (
     <>
         <div className="d-none d-md-block">
             <br/>
-            <p>
-            Selected Providers Below
-            </p>
             <br/>
         { selectedProviders.map((providerSelected) => 
                 (<ProviderBox selectable={false} key={providerSelected.name} name={providerSelected.name} url={providerSelected.url}/> )

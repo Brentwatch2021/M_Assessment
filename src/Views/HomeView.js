@@ -162,10 +162,13 @@ const HomeView = (props) => {
                   <option value="50+">50 Mbps+</option>
                 </select>
             </div>
+            <br></br>
+            <br></br>
+            {providersSelected.length > 0 ? <span> Selected Fibre Infrastructure Providers:</span> : null}
           </div>
           
         </div>
-        <div className='d-flex flex-column justify-content-center'>
+        <div className='d-flex justify-content-center'>
               <SelectedProvidersView/>
           </div>
       </div>
