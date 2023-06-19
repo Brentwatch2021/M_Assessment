@@ -102,7 +102,10 @@ export const GetProviders_And_Products = async (dealType) => {
                 return provider;
             }
         }
-
+  
+  const GetProviderLogo = (provider) => {
+        return `https://www.mweb.co.za/media/images/providers/provider-${GetProviderImageName(provider.toLowerCase())}.png`;
+  }
 
   export const getSummarizedProduct = ({id,productCode,friendlyName, productName, productRate, subcategory,parameters},promoCode) => 
         {
@@ -148,4 +151,74 @@ export const GetProviders_And_Products = async (dealType) => {
     }
  }
   
-  
+
+
+ /**
+ * Provider Information:
+ * - provider_Name: The name of the provider.
+ * - provider_Logo_URL: The URL of the provider's logo.
+ * - provider_Deal_Type
+ * - provider_PromoCodeData[]: The promo code data of the provider.
+ *
+ * Promotion Information:
+ * - promotionCode: The promotion code.
+ * - promotionCodeCategory: The category of the promotion code fibre or lte
+ */
+ export const GetProviders = async (productConnectionType) => 
+ {
+         try
+         {
+          let providers = [];
+
+          const campaigns = await axios.get(`https://apigw.mweb.co.za/prod/baas/proxy/marketing/campaigns/${productConnectionType}?channels=120&visibility=public`);
+
+          if(campaigns && campaigns.status === 200 && campaigns.data && campaigns.data.campaigns.length > 0)
+          {
+            for (const campaign of campaigns.data.campaigns)
+            {
+              const dealType = campaign.name;
+              if(campaign.promocodes.length > 0)
+              {
+                for (const promoCode of campaign.promocodes) 
+                {
+                  const providerData = await axios.get(`https://apigw.mweb.co.za/prod/baas/proxy/marketing/products/promos/${promoCode}?sellable_online=true`);
+                  if(providerData && providerData.status === 200 && providerData.data.length > 0)
+                  {
+                    const provider_name = providerData.data[0].provider;
+                    const provider_logo = GetProviderLogo(provider_name);
+                    const Promotioninfo = { 
+                                            promotionCode: promoCode,
+                                            promoCodeCategory: providerData.data[0].promoCodeCategory
+                    }
+
+                    if(providers)
+                    {
+                      const providerDataFound = providers.find(providerDataFoundItem => providerDataFoundItem.provider_Name === provider_name);
+                      if (providerDataFound) 
+                      {
+                        providers.find(providerDataFoundItem => providerDataFoundItem.provider_Name === provider_name)
+                        .Promotionalinfo.push({Promotioninfo:Promotioninfo});
+                      }
+                      else
+                      {
+                        providers.push({provider_Name: provider_name,
+                                        provider_Logo_URL: provider_logo,
+                                        provider_Deal_Type: dealType,
+                                        Promotionalinfo:[{Promotioninfo}]})
+                      }
+                    }
+                    
+                  }
+                }
+              }  
+            }
+          }
+          return providers;        
+         }
+        catch(error)
+        {
+             console.log('Error getting promotional data: ' + error)    
+         }
+      }
+ 
+

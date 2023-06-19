@@ -3,7 +3,7 @@ import ProviderBox from '../Components/ProviderBox/ProviderBox';
 import SelectedProvidersView from './SelectedProvidersView';
 import ProductsView from './ProductsView';
 import { PriceRangeContext, ProductsContext, ProvidersContext, ProvidersSelectedContext, SpeedRangeContext } from '../React_Context_API/FibreProductsContext';
-import { GetProviders_And_Products } from '../API/apiUtilities';
+import { GetProviders, GetProviders_And_Products } from '../API/apiUtilities';
 import './HomeView.css'
 
 const HomeView = (props) => {
@@ -16,6 +16,10 @@ const HomeView = (props) => {
 
     const [ priceRangeSelected,setPriceRangeSelected ] = useContext(PriceRangeContext);
     const [speedRangeSelected,setSpeedRangeSelected] = useContext(SpeedRangeContext);
+
+    //const [summarizedProviders, setSummarizedProviders] = useState([]);
+
+
 
     const handlePriceChange = (event) => {
 
@@ -31,22 +35,38 @@ const HomeView = (props) => {
 
   
     useEffect(() => {
-        GetFibreContent()
+        GetFibreContent();
+        // if(summarizedProviders.length === 0)
+        // {
+        //   GetProvidersContent(); 
+        // }
+        
         },[])
 
+    // const GetProvidersContent = async () => 
+    // {
+    //   const providers_ = await GetProviders('fibre');
+    //   if(providers_ && providers_.length > 0)
+    //   {
+    //       setSummarizedProviders(providers_)
+    //   }
+    // }
+        
+      
 
-        const GetFibreContent = async () => {
-          const { summarizedProviders, summarizedProducts} = await GetProviders_And_Products('FTTH-FREESETUP-FREEROUTER');
-          if(summarizedProviders && summarizedProviders.length > 0)
-          {
-            setlocalProviders(summarizedProviders);
-          }
+    const GetFibreContent = async () => 
+    {
+      const { summarizedProviders, summarizedProducts} = await GetProviders_And_Products('FTTH-FREESETUP-FREEROUTER');
+      if(summarizedProviders && summarizedProviders.length > 0)
+      {
+        setlocalProviders(summarizedProviders);
+      }
           
-          if(summarizedProducts && summarizedProducts.length > 0)
-          {
-            setlocalProducts(summarizedProducts);
-          }
-        }
+      if(summarizedProducts && summarizedProducts.length > 0)
+      {
+        setlocalProducts(summarizedProducts);
+      }
+    }
 
 
 
@@ -79,7 +99,7 @@ const HomeView = (props) => {
     return(
         <>
     
-     <div className="container"> 
+     <header className="container"> 
       <div className='d-flex m-5 flex-column align-items-center'>
         <h4 className='font-weight-bold'>Fibre Products</h4>
         <div className='text-center'>
@@ -89,28 +109,40 @@ const HomeView = (props) => {
       <div className="container-fluid px-0 mx-0">
         <div className="row">
           <div className="col-12 d-flex align-items-center">
+            {/* Provider Box Start */}
             <button onClick={scrollLeft} className="btn mr-auto"><img src={process.env.PUBLIC_URL + '/arrow-left.png'} alt={'arrow-left'}></img></button>
-          <div className="overflow-auto px-0 mx-0 scrollbar-hidden"
-           ref={providerCarouselRef}>
-            <div className="mx-auto d-flex">
-            { localProviders.length > 0 ?
-            localProviders.map
-            ((p,index) => 
-            (<ProviderBox selectable={true} key={`providerbox${p.name}${p.url}${index}`} name={p.name} url={p.url}/>
-            ))    :  <p className='d-flex align-items-center'>Loading</p>   }        
+                <div className="overflow-auto px-0 mx-0 scrollbar-hidden"
+                    ref={providerCarouselRef}>
+                <div className="mx-auto d-flex">
+                { localProviders.length > 0 ?
+                  localProviders.map
+                  ((p,index) => 
+                    (<ProviderBox selectable={true} key={`providerbox${p.name}${p.url}${index}`} name={p.name} url={p.url}/>
+                  ))    :  <p className='d-flex align-items-center'>Loading</p>   }        
+                </div>
             </div>
+            <button onClick={scrollRight} className="btn ml-auto"><img src={process.env.PUBLIC_URL + '/arrow-right.png'} alt="arrow-right" />
+            </button>
+          </div>
+          {/* Provider Box End */}
+          {/* <button onClick={scrollLeft} className="btn mr-auto"><img src={process.env.PUBLIC_URL + '/arrow-left.png'} alt={'arrow-left'}></img></button>
+                <div className="overflow-auto px-0 mx-0 scrollbar-hidden"
+                    ref={providerCarouselRef}>
+                <div className="mx-auto d-flex">
+                { summarizedProviders.length > 0 ?
+                  summarizedProviders.map
+                  ((p,index) => 
+                    (<ProviderBox selectable={true} key={`providerbox${p.provider_Name}${p.provider_Logo_URL}${index}`} name={p.provider_Name} url={p.provider_Logo_URL}/>
+                  ))    :  <p className='d-flex align-items-center'>Loading</p>   }        
+                </div>
+            </div>
+            <button onClick={scrollRight} className="btn ml-auto"><img src={process.env.PUBLIC_URL + '/arrow-right.png'} alt="arrow-right" />
+            </button> */}
+          {/* </div> */}
+        </div>
       </div>
-      <button onClick={scrollRight} className="btn ml-auto"><img src={process.env.PUBLIC_URL + '/arrow-right.png'} alt="arrow-right" />
-</button>
-    </div>
-  </div>
-</div>
 
-      
-    </div>
     
-    <div className='container'>
-    <div className='row'>
       <div className='col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12'>
       <span className='d-flex justify-content-center'>Select Filters Below</span>
         <div className='d-flex flex-wrap justify-content-center'>
@@ -132,23 +164,17 @@ const HomeView = (props) => {
             </div>
           </div>
           
-            
-            
-          <div>
-        
-          </div>
-          
         </div>
-        <div className='d-flex justify-content-center'>
+        <div className='d-flex flex-column justify-content-center'>
               <SelectedProvidersView/>
           </div>
       </div>
-    </div>  
-</div>
-
+    
+</header>
+<main>
 { localProviders.length > 0 && localProducts.length > 0 ? 
  <ProductsView Products={localProducts} /> : null }
-    
+</main>
     </>    
     );
 }
