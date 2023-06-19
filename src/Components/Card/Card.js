@@ -13,13 +13,13 @@ const Card = (props) => {
 
 
     return (
-        <div className={props.Fullscreen ? 'col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12' : 'col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6'}>
+        <article className={props.Fullscreen ? 'col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12' : 'col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6'}>
                   <div className='d-flex flex-wrap justify-content-between'>
-                    <div className='d-flex flex-column'>
+                    <section className='d-flex flex-column'>
                       <span className='productName'>{props.product.productName}</span>
                       { props.unthrottled ? <span className='throttling'>Unthrottled </span> :  <span className='throttling'>Unthrottled </span>} 
-                    </div>
-                    <div className='d-flex flex-wrap justify-content-between  p-2 border'>
+                    </section>
+                    <section className='d-flex flex-wrap justify-content-between  p-2 border'>
                          <div className='d-flex flex-column p-2'>
                               <div className="d-flex justify-content-center align-items-center">
                                   <span className="text-center"><i className="bi bi-arrow-down"></i></span>
@@ -34,14 +34,14 @@ const Card = (props) => {
                             <span>Upload</span> 
                             <span>{props.product.uploadSpeedTotal}{props.product.measurementPS}</span> 
                          </div>
-                    </div>
+                    </section>
                   </div>
-                  <div className='d-flex flex-wrap justify-content-around p-4'>
+                  <section className='d-flex flex-wrap justify-content-around p-4'>
                     <div><span className='rateStyle'>R{props.product.productRate}pm</span></div>
                     <div> <img src={props.product.providerUrl} alt={props.product.provider}></img> </div>
                     <div> {props.Fullscreen ? null : <button id_for_product_details_page={props.product.idFromProduct} promocode_for_product_details_page={props.product.promoCode_From_codes} onClick={handledetailsPageView} className='coverageButton p-2'>View Details</button>} </div>
-                  </div>
-            </div>  
+                  </section>
+            </article>  
     )
 }
 
